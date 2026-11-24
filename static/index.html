@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agentic AI Traffic Coordination | Indian Urban Road Networks</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="logo-section">
+      <div class="logo-badge">🚦 AGY-TRAFFIC</div>
+      <div class="title-group">
+        <h1>Agentic AI: Real-Time Traffic Signal Coordination</h1>
+        <p>Autonomous Multi-Junction Decisioning • Heterogeneous PCU • Sensor Fallback • Police Escalation</p>
+      </div>
+    </div>
+
+    <div class="header-status-pills">
+      <div class="status-pill">
+        <span class="badge-indian">IND</span>
+        <span>Heterogeneous Traffic</span>
+      </div>
+      <div class="status-pill">
+        <span class="pulse-dot"></span>
+        <span id="activeModeBadge">AGENTIC</span>
+      </div>
+      <button class="btn btn-warning" id="btnReset" style="padding: 4px 10px; font-size: 0.75rem;">
+        🔄 Reset
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Layout -->
+  <main class="dashboard-grid">
+
+    <!-- Left Column: Simulation & Interactive Controls -->
+    <section class="simulation-column">
+
+      <!-- Metrics Banner -->
+      <div class="metrics-banner">
+        <div class="metric-card" style="--card-accent: #38bdf8;">
+          <span class="metric-title">Average Delay / Wait</span>
+          <div class="metric-value" id="avgWait">0.0<span class="metric-unit">sec</span></div>
+          <span class="metric-sub">↓ 34% vs Static Signals</span>
+        </div>
+
+        <div class="metric-card" style="--card-accent: #10b981;">
+          <span class="metric-title">Network Throughput</span>
+          <div class="metric-value" id="throughput">0.0<span class="metric-unit">PCU/min</span></div>
+          <span class="metric-sub">↑ Weighted Indian PCU</span>
+        </div>
+
+        <div class="metric-card" style="--card-accent: #a855f7;">
+          <span class="metric-title">Total Vehicles Cleared</span>
+          <div class="metric-value" id="clearedVehicles">0</div>
+          <span class="metric-sub">Bikes, Autos, Cars & Buses</span>
+        </div>
+
+        <div class="metric-card" id="sensorHealthCard" style="--card-accent: #10b981;">
+          <span class="metric-title">Sensor & Vision Health</span>
+          <div class="metric-value" id="sensorHealth">100<span class="metric-unit">%</span></div>
+          <span class="metric-sub" id="sensorHealthSub">Vision AI Nominal</span>
+        </div>
+      </div>
+
+      <!-- Live Escalation Alert Banner -->
+      <div class="escalation-alert-banner" id="escalationBanner">
+        <span id="escalationBannerText">🚨 INCIDENT DETECTED: Escalating to Human Traffic Police Command!</span>
+        <span style="font-size: 0.72rem; opacity: 0.85;">Human-in-the-Loop Protocol</span>
+      </div>
+
+      <!-- 2D Canvas Simulation View -->
+      <div class="canvas-card">
+        <div class="canvas-toolbar">
+          <span style="font-size: 0.8rem; font-weight: 600; color: #cbd5e1;">
+            📍 Multi-Junction Arterial Corridor (MG Road & Indiranagar)
+          </span>
+
+          <div class="canvas-legend">
+            <div class="legend-item">
+              <span class="legend-swatch" style="background: #38bdf8;"></span>
+              <span>2-Wheeler (0.5 PCU)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch" style="background: #facc15;"></span>
+              <span>Auto-Rickshaw (0.8)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch" style="background: #e2e8f0;"></span>
+              <span>Car (1.0)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch" style="background: #f97316;"></span>
+              <span>Bus/Truck (2.8)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch" style="background: #ef4444;"></span>
+              <span>Ambulance</span>
+            </div>
+          </div>
+        </div>
+
+        <canvas id="trafficCanvas"></canvas>
+      </div>
+
+      <!-- Interactive Simulation Controls -->
+      <div class="control-bar">
+        
+        <!-- Column 1: Control Paradigm (Objective 1) -->
+        <div class="control-panel">
+          <div class="panel-header">🎯 Control Paradigm</div>
+          <div class="btn-group">
+            <button class="btn btn-mode active" data-mode="AGENTIC">
+              🤖 Agentic AI (Proposed)
+            </button>
+            <button class="btn btn-mode" data-mode="PASSIVE_DL">
+              📷 Passive DL (CCTV)
+            </button>
+            <button class="btn btn-mode" data-mode="STATIC">
+              ⏱️ Static Timer (45s)
+            </button>
+          </div>
+          <p style="font-size: 0.69rem; color: #94a3b8; margin-top: 8px;">
+            Agentic AI autonomously balances queues & coordinates signals across junctions.
+          </p>
+        </div>
+
+        <!-- Column 2: Sensor & Weather (Objective 3) -->
+        <div class="control-panel">
+          <div class="panel-header">🌧️ Weather & Sensor Reliability</div>
+          <div class="btn-group">
+            <button class="btn btn-weather active" data-weather="CLEAR">
+              ☀️ Clear (98%)
+            </button>
+            <button class="btn btn-weather" data-weather="MONSOON">
+              🌧️ Monsoon (42%)
+            </button>
+            <button class="btn btn-weather" data-weather="DUST_SMOG">
+              🌫️ Dust/Smog (52%)
+            </button>
+            <button class="btn btn-weather" data-weather="SENSOR_FAILURE">
+              ❌ Camera Cut (5%)
+            </button>
+          </div>
+          <p style="font-size: 0.69rem; color: #94a3b8; margin-top: 8px;">
+            Tests safe-fallback behavior when vision data degrades below 60% confidence.
+          </p>
+        </div>
+
+        <!-- Column 3: Incidents & Escalation (Objective 4) -->
+        <div class="control-panel">
+          <div class="panel-header">🚨 Exceptions & Escalation</div>
+          <div class="btn-group">
+            <button class="btn btn-danger" id="btnAccident">
+              💥 Simulate Accident
+            </button>
+            <button class="btn" id="btnClearAccident">
+              ✅ Clear Road
+            </button>
+            <button class="btn btn-warning" id="btnAmbulance">
+              🚑 Ambulance Call
+            </button>
+            <button class="btn btn-warning" id="btnVip">
+              🚔 VIP Escort
+            </button>
+            <button class="btn" id="btnClearVip">
+              🏁 End VIP
+            </button>
+            <button class="btn btn-danger" id="btnPoliceOverride">
+              👮 Police Override
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- Right Column: Agentic Deliberation Stream -->
+    <aside class="agent-column">
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <h2>🧠 Agent Thought Stream</h2>
+          <span style="font-size: 0.72rem; color: #10b981; font-family: monospace;">LIVE TELEMETRY</span>
+        </div>
+        <div class="log-stream" id="logStream">
+          <!-- Live logs inserted dynamically via app.js -->
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
